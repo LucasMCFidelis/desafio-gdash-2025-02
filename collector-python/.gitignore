@@ -1,0 +1,57 @@
+# ----------------------------------------
+# Python
+# ----------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Arquivos de build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual env
+venv/
+.venv/
+
+# Cache de ferramentas
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+.cache/
+
+# Logs
+*.log
+
+# Configs locais
+.env
+.env.*
+*.env
+
+# Editor
+.vscode/
+.idea/
+
+# Sistemas
+.DS_Store
+Thumbs.db
+
+# ----------------------------------------
+# Docker
+# ----------------------------------------
+docker-compose.override.yml
+*.tar
+
+# ----------------------------------------
+# PyInstaller
+# ----------------------------------------
+*.spec
+
+# ----------------------------------------
+# Outros
+*.sqlite3
