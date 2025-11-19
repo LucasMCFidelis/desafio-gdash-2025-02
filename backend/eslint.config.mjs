@@ -1,16 +1,19 @@
 // @ts-check
+import { defineConfig, globalIgnores } from 'eslint/config';
+
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
-export default tseslint.config(
-  {
-    ignores: ['eslint.config.mjs'],
-  },
+export default defineConfig([
+  globalIgnores(['eslint.config.mjs', 'dist']),
+
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   eslintPluginPrettierRecommended,
+
   {
     languageOptions: {
       globals: {
@@ -23,13 +26,22 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+    },
   },
+
   {
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
-      "prettier/prettier": ["error", { endOfLine: "auto" }],
+
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
+
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
-);
+]);
