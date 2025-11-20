@@ -22,7 +22,8 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URL=mongodb://mongo:27017/weather
+      - MONGODB_URL=mongodb://mongo:27017
+      - MONGODB_NAME=gdash_weather
       - RABBITMQ_URL=amqp://rabbitmq:5672
 
   collector:

@@ -1,10 +1,21 @@
-import { Module } from '@nestjs/common';
+import { Module, NotFoundException } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
+const DATABASE_URL = process.env.MONGODB_URL;
+
+if (!DATABASE_URL) {
+  throw new NotFoundException('Url do banco não encontrada');
+}
+
 @Module({
-  imports: [],
+  imports: [
+    MongooseModule.forRoot(DATABASE_URL, {
+      dbName: process.env.MONGODB_NAME,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
