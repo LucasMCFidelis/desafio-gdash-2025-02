@@ -44,4 +44,11 @@ export default defineConfig([
       'simple-import-sort/exports': 'error',
     },
   },
+
+  {
+    files: ['src/**/dto/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unsafe-call': 'off',
+    },
+  },
 ]);
