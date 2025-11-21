@@ -1,10 +1,20 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
-import { User } from './Schema/user.schema';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User, UserLean } from './Schema/user.schema';
 import { CreateUserService } from './services/create-user.service';
 import { DeleteUserService } from './services/delete-user.service';
 import { GetUserService } from './services/get-user.service';
+import { UpdateUserService } from './services/update-user.service';
 
 @Controller('user')
 export class UserController {
@@ -12,6 +22,7 @@ export class UserController {
     private readonly createUserService: CreateUserService,
     private readonly getUserService: GetUserService,
     private readonly deleteUserService: DeleteUserService,
+    private readonly updateUserService: UpdateUserService,
   ) {}
 
   @Post()
@@ -33,5 +44,13 @@ export class UserController {
     @Query('userEmail') userEmail?: string,
   ): Promise<void> {
     return this.deleteUserService.execute({ userId, userEmail });
+  }
+
+  @Put()
+  async update(
+    @Body() userUpdateData: UpdateUserDto,
+    @Query('userId') userId: string,
+  ): Promise<UserLean> {
+    return this.updateUserService.execute(userId, userUpdateData);
   }
 }
