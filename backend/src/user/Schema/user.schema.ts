@@ -21,3 +21,8 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+/**
+ * Type retornado por .lean()
+ */
+export type UserLean = User & { _id: string };

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 
 import { GetUserRepository } from '../repositories/get-user.repository';
-import { User } from '../Schema/user.schema';
+import { UserLean } from '../Schema/user.schema';
 
 interface FindProps {
   userId?: string;
@@ -17,14 +17,14 @@ interface FindProps {
 export class GetUserService {
   constructor(private readonly getUserRepository: GetUserRepository) {}
 
-  async find({ userEmail, userId }: FindProps): Promise<User> {
+  async find({ userEmail, userId }: FindProps): Promise<UserLean> {
     if (!userEmail && !userId) {
       throw new BadRequestException(
         'Envie userId ou userEmail para realizar a busca.',
       );
     }
 
-    let user: User | null = null;
+    let user: UserLean | null = null;
 
     if (userId) {
       user = await this.getUserRepository.findById(userId);
