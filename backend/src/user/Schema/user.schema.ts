@@ -11,6 +11,7 @@ export class User {
   @Prop({
     required: true,
     min: 10,
+    unique: true,
     match: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   })
   email: string;
