@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
+import { UserQueryOptions } from '../interfaces/user-query-options.interface';
 import { DeleteUserRepository } from '../repositories/delete-user.repository';
 import { GetUserService } from './get-user.service';
-
-interface Props {
-  userId?: string;
-  userEmail?: string;
-}
 
 @Injectable()
 export class DeleteUserService {
@@ -15,8 +11,8 @@ export class DeleteUserService {
     private readonly getUserService: GetUserService,
   ) {}
 
-  async execute({ userEmail, userId }: Props): Promise<void> {
-    const user = await this.getUserService.find({ userEmail, userId });
+  async execute(options: UserQueryOptions): Promise<void> {
+    const user = await this.getUserService.find(options);
 
     await this.deleteUserRepository.deleteById(user._id);
   }

@@ -5,19 +5,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import { UserQueryOptions } from '../interfaces/user-query-options.interface';
 import { GetUserRepository } from '../repositories/get-user.repository';
 import { UserLean } from '../Schema/user.schema';
-
-interface FindProps {
-  userId?: string;
-  userEmail?: string;
-}
 
 @Injectable()
 export class GetUserService {
   constructor(private readonly getUserRepository: GetUserRepository) {}
 
-  async find({ userEmail, userId }: FindProps): Promise<UserLean> {
+  async find({ userEmail, userId }: UserQueryOptions): Promise<UserLean> {
     if (!userEmail && !userId) {
       throw new BadRequestException(
         'Envie userId ou userEmail para realizar a busca.',
