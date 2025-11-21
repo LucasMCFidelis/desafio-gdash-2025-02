@@ -6,7 +6,10 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthorizationGuard } from 'src/auth/authorization.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -31,6 +34,7 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   async find(
     @Query('userId') userId?: string,
     @Query('userEmail') userEmail?: string,
@@ -39,6 +43,7 @@ export class UserController {
   }
 
   @Delete()
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   async delete(
     @Query('userId') userId?: string,
     @Query('userEmail') userEmail?: string,
@@ -47,6 +52,7 @@ export class UserController {
   }
 
   @Put()
+  @UseGuards(JwtAuthGuard, AuthorizationGuard)
   async update(
     @Body() userUpdateData: UpdateUserDto,
     @Query('userId') userId: string,

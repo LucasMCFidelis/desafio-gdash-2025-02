@@ -2,12 +2,14 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserLean } from 'src/user/Schema/user.schema';
 
+import { JwtPayload } from '../interfaces/jwt-payload.interface';
+
 @Injectable()
 export class TokenAuthService {
   constructor(private readonly jwtService: JwtService) {}
 
   generateToken(user: UserLean): string {
-    const payload = {
+    const payload: JwtPayload = {
       id: user._id,
       name: user.name,
       email: user.email,
@@ -16,14 +18,12 @@ export class TokenAuthService {
     return this.jwtService.sign(payload);
   }
 
-  validateToken(userToken: string): boolean {
+  async validateToken(userToken: string): Promise<JwtPayload> {
     try {
-      this.jwtService.verify(userToken);
+      return await this.jwtService.verifyAsync(userToken);
     } catch (error) {
       console.error(error);
       throw new UnauthorizedException('Token invalido');
     }
-
-    return true;
   }
 }
