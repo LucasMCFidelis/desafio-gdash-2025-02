@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';
@@ -19,7 +19,7 @@ import { TokenAuthService } from './services/token-auth.service';
         signOptions: { expiresIn: '1h' },
       }),
     }),
-    UserModule,
+    forwardRef(() => UserModule),
   ],
 })
 export class AuthModule {}
