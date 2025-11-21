@@ -1,8 +1,15 @@
+import { UnauthorizedException } from '@nestjs/common';
 import bcrypt from 'bcrypt';
 
 export async function comparePasswords(
-  passwordProvided: string,
-  passwordHash: string,
-) {
-  return await bcrypt.compare(passwordProvided, passwordHash);
+  provided: string,
+  stored: string,
+): Promise<boolean> {
+  const match = await bcrypt.compare(provided, stored);
+
+  if (!match) {
+    throw new UnauthorizedException('Credenciais inválidas');
+  }
+
+  return true;
 }
