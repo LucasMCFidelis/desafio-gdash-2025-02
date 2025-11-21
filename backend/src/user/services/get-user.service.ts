@@ -39,9 +39,7 @@ export class GetUserService {
     const exists = await this.getUserRepository.checkExistingEmail(userEmail);
 
     if (exists) {
-      throw new ConflictException(
-        'Usuário não pode ser cadastrado, email já está em uso.',
-      );
+      throw new ConflictException('Este e-mail já está em uso.');
     }
   }
 }
