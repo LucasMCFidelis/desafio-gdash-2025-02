@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { DeleteUserRepository } from '../repositories/delete-user.repository';
 import { GetUserService } from './get-user.service';
@@ -16,12 +16,6 @@ export class DeleteUserService {
   ) {}
 
   async execute({ userEmail, userId }: Props): Promise<void> {
-    if (!userEmail && !userId) {
-      throw new BadRequestException(
-        'Envie userId ou userEmail para realizar a exclusão.',
-      );
-    }
-
     const user = await this.getUserService.find({ userEmail, userId });
 
     await this.deleteUserRepository.deleteById(user._id);
