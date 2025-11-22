@@ -31,9 +31,13 @@ services:
     container_name: collector
     depends_on:
       - rabbitmq
+    volumes:
+      - ./collector-python:/app
     environment:
       - RABBITMQ_URL=amqp://rabbitmq:5672
       - WEATHER_API_KEY=${WEATHER_API_KEY}
+      - LATITUDE=${LATITUDE}
+      - LONGITUDE=${LONGITUDE}
 
   worker:
     build: ./worker-go
