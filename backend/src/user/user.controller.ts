@@ -8,8 +8,8 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { AuthorizationGuard } from 'src/auth/authorization.guard';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { AuthorizationGuard } from 'src/auth/guards/authorization.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 import { UpdateUserDto } from './dto/update-user.dto';
