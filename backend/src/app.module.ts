@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { WeatherModule } from './weather/weather.module';
 
 const DATABASE_URL = process.env.MONGODB_URL;
 
@@ -21,6 +22,7 @@ if (!DATABASE_URL) {
     UserModule,
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    WeatherModule,
   ],
   controllers: [AppController],
   providers: [AppService],
