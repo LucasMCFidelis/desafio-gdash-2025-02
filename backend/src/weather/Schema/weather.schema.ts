@@ -22,3 +22,5 @@ export class Weather {
 }
 
 export const WeatherSchema = SchemaFactory.createForClass(Weather);
+
+export type WeatherLean = Weather & { _id: string };
