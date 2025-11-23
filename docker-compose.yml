@@ -60,6 +60,11 @@ services:
     ports:
       - "15672:15672" # painel
       - "5672:5672" # AMQP
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASS}
+    volumes:
+      - ./infra/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
 
   mongo:
     image: mongo
