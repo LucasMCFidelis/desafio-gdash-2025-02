@@ -9,4 +9,4 @@ COPY . .
 
 RUN go build -o worker .
 
-CMD ["./worker"]
+CMD ["./worker", "-f"]
