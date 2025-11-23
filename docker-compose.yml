@@ -21,6 +21,8 @@ services:
       - "3000:3000"
     depends_on:
       - mongo
+    volumes:
+      - ./contracts:/app/contracts:ro
     environment:
       - MONGODB_URL=mongodb://mongo:27017
       - MONGODB_NAME=gdash_weather
@@ -33,6 +35,7 @@ services:
       - rabbitmq
     volumes:
       - ./collector-python:/app
+      - ./contracts:/app/contracts:ro
     environment:
       - RABBITMQ_URL=amqp://rabbitmq:5672
       - WEATHER_API_KEY=${WEATHER_API_KEY}
@@ -45,6 +48,8 @@ services:
     depends_on:
       - rabbitmq
       - api
+    volumes:
+      - ./contracts:/app/contracts:ro
     environment:
       - RABBITMQ_URL=amqp://rabbitmq:5672
       - API_URL=http://api:3000
