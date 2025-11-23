@@ -12,7 +12,7 @@ import (
 
 var (
 	rabbitURL = configs.GetEnv("RABBITMQ_URL")
-	queueName = "weather_raw"
+	queueName = configs.GetEnv("QUEUE_NAME")
 	apiURL    = configs.GetEnv("API_URL") + "/api/weather/logs"
 )
 

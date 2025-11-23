@@ -38,6 +38,7 @@ services:
       - ./contracts:/app/contracts:ro
     environment:
       - RABBITMQ_URL=amqp://${RABBIT_USER}:${RABBIT_PASS}@rabbitmq:5672/
+      - QUEUE_NAME=${QUEUE_NAME}
       - WEATHER_API_KEY=${WEATHER_API_KEY}
       - LATITUDE=${LATITUDE}
       - LONGITUDE=${LONGITUDE}
@@ -52,6 +53,7 @@ services:
       - ./contracts:/app/contracts:ro
     environment:
       - RABBITMQ_URL=amqp://${RABBIT_USER}:${RABBIT_PASS}@rabbitmq:5672/
+      - QUEUE_NAME=${QUEUE_NAME}
       - API_URL=http://api:3000
 
   rabbitmq:
