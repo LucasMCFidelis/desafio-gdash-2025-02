@@ -5,21 +5,27 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Instalar cron
 RUN apt-get update && apt-get install -y cron
 
 COPY . .
 
-# Criar log
+# Criar log para o cron
 RUN touch /var/log/cron.log
 
-# Copiar o cronjob real (nome correto)
+# Copiar cronjob
 COPY cronjob /etc/cron.d/collector-cron
 
-# Remover CRLF se existir
+# Normalizar caso tenha CRLF
 RUN tr -d '\r' < /etc/cron.d/collector-cron > /tmp/clean && mv /tmp/clean /etc/cron.d/collector-cron
 
-# Permissões obrigatórias
+# Permissões corretas
 RUN chmod 644 /etc/cron.d/collector-cron
 RUN crontab /etc/cron.d/collector-cron
 
-CMD ["cron", "-f"]
+# Copiar entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Usar entrypoint que exporta as envs antes de iniciar o cron
+ENTRYPOINT ["/entrypoint.sh"]
