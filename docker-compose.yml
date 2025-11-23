@@ -26,7 +26,7 @@ services:
     environment:
       - MONGODB_URL=mongodb://mongo:27017
       - MONGODB_NAME=gdash_weather
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://${RABBIT_USER}:${RABBIT_PASS}@rabbitmq:5672/
 
   collector:
     build: ./collector-python
@@ -37,7 +37,7 @@ services:
       - ./collector-python:/app
       - ./contracts:/app/contracts:ro
     environment:
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://${RABBIT_USER}:${RABBIT_PASS}@rabbitmq:5672/
       - WEATHER_API_KEY=${WEATHER_API_KEY}
       - LATITUDE=${LATITUDE}
       - LONGITUDE=${LONGITUDE}
@@ -51,7 +51,7 @@ services:
     volumes:
       - ./contracts:/app/contracts:ro
     environment:
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://${RABBIT_USER}:${RABBIT_PASS}@rabbitmq:5672/
       - API_URL=http://api:3000
 
   rabbitmq:
