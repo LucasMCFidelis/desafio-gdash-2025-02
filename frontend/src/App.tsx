@@ -1,7 +1,19 @@
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+
+import { routeTree } from "./route-tree.gen";
+
+const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
 function App() {
   return (
     <>
-      <h1 className="font-bold text-2xl">Vite + React</h1>
+      <RouterProvider router={router} />
     </>
   );
 }
