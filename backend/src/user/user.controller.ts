@@ -6,10 +6,13 @@ import {
   Post,
   Put,
   Query,
+  Res,
   UseGuards,
 } from '@nestjs/common';
+import { type Response } from 'express';
 import { AuthorizationGuard } from 'src/auth/guards/authorization.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { setAuthCookie } from 'src/common/utils/cookie.helpers';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -29,8 +32,16 @@ export class UserController {
   ) {}
 
   @Post()
-  async create(@Body() user: CreateUserDto): Promise<CreateUserDto> {
-    return this.createUserService.execute(user);
+  async create(
+    @Body() user: CreateUserDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<CreateUserDto> {
+    const { userToken, ...newUser } =
+      await this.createUserService.execute(user);
+
+    setAuthCookie(res, userToken);
+
+    return newUser;
   }
 
   @Get()

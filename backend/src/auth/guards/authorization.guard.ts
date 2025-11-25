@@ -13,12 +13,16 @@ export class AuthorizationGuard implements CanActivate {
 
     const user = request.user;
     const targetUserId = request.query.userId;
+    const targetUserEmail = request.query.userEmail;
 
     if (!user) {
       throw new ForbiddenException('Usuário não autenticado.');
     }
 
-    if (user.id !== targetUserId) {
+    if (
+      (targetUserId && user.id !== targetUserId) ||
+      (targetUserEmail && user.email !== targetUserEmail)
+    ) {
       throw new ForbiddenException(
         'Você não pode alterar dados de outro usuário.',
       );
