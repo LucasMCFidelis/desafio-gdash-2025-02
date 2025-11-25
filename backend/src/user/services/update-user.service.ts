@@ -1,4 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { hashPassword } from 'src/common/utils/hashPassword';
 
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UpdateUserRepository } from '../repositories/update-user.repository';
@@ -19,10 +20,15 @@ export class UpdateUserService {
       await this.getUserService.checkExistingEmail(updateData.email);
     }
 
-    const userUpdated = await this.updateUserRepository.execute(
-      userId,
-      updateData,
-    );
+    let passwordHashed: string | null = null;
+    if (updateData.password) {
+      passwordHashed = await hashPassword(updateData.password);
+    }
+
+    const userUpdated = await this.updateUserRepository.execute(userId, {
+      ...updateData,
+      ...(passwordHashed && { password: passwordHashed }),
+    });
 
     if (!userUpdated) {
       throw new InternalServerErrorException(
