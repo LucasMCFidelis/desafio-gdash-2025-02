@@ -9,48 +9,55 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './pages/__root'
+import { Route as AuthIndexRouteImport } from './pages/auth/index'
 import { Route as AppIndexRouteImport } from './pages/_app/index'
-import { Route as AuthSingInRouteImport } from './pages/_auth/sing-in'
 
+const AuthIndexRoute = AuthIndexRouteImport.update({
+  id: '/auth/',
+  path: '/auth/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/_app/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthSingInRoute = AuthSingInRouteImport.update({
-  id: '/_auth/sing-in',
-  path: '/sing-in',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
-  '/sing-in': typeof AuthSingInRoute
   '/': typeof AppIndexRoute
+  '/auth': typeof AuthIndexRoute
 }
 export interface FileRoutesByTo {
-  '/sing-in': typeof AuthSingInRoute
   '/': typeof AppIndexRoute
+  '/auth': typeof AuthIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_auth/sing-in': typeof AuthSingInRoute
   '/_app/': typeof AppIndexRoute
+  '/auth/': typeof AuthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/sing-in' | '/'
+  fullPaths: '/' | '/auth'
   fileRoutesByTo: FileRoutesByTo
-  to: '/sing-in' | '/'
-  id: '__root__' | '/_auth/sing-in' | '/_app/'
+  to: '/' | '/auth'
+  id: '__root__' | '/_app/' | '/auth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthSingInRoute: typeof AuthSingInRoute
   AppIndexRoute: typeof AppIndexRoute
+  AuthIndexRoute: typeof AuthIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth/': {
+      id: '/auth/'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/': {
       id: '/_app/'
       path: '/'
@@ -58,19 +65,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth/sing-in': {
-      id: '/_auth/sing-in'
-      path: '/sing-in'
-      fullPath: '/sing-in'
-      preLoaderRoute: typeof AuthSingInRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  AuthSingInRoute: AuthSingInRoute,
   AppIndexRoute: AppIndexRoute,
+  AuthIndexRoute: AuthIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
