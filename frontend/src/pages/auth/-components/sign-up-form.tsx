@@ -2,9 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import {
-  CardContent, CardFooter
-} from "@/components/ui/card";
+import { CardContent, CardFooter } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -14,12 +12,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useSignUpMutation } from "@/hooks/mutations/use-sign-up-mutation";
 
 import { signUpSchema, type SignUpSchemaDto } from "../-schemas/sign-up-schema";
 import AuthRootForm from "./auth-root-form";
 import PasswordInput from "./password-input";
 
 const SignUpForm = () => {
+  const signUpMutation = useSignUpMutation();
   const form = useForm<SignUpSchemaDto>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -31,7 +31,7 @@ const SignUpForm = () => {
   });
 
   async function onSubmit(values: SignUpSchemaDto) {
-    console.log(values);
+    await signUpMutation.mutateAsync(values)
   }
 
   return (

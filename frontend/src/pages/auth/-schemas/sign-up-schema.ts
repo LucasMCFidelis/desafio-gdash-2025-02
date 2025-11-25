@@ -2,7 +2,10 @@ import z from "zod";
 
 export const signUpSchema = z
   .object({
-    name: z.string("Nome inválido.").trim().min(1, "Nome é obrigatório."),
+    name: z
+      .string("Nome inválido.")
+      .trim()
+      .min(3, "Nome deve ter pelo menos 3 caracteres."),
     email: z.email("E-mail inválido!"),
     password: z.string("Senha inválida!").min(8, "Senha inválida!"),
     passwordConfirmation: z.string("Senha inválida!").min(8, "Senha inválida!"),
