@@ -12,6 +12,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { useSignInMutation } from "@/hooks/mutations/use-sign-in-mutation";
 import {
   signInSchema,
   type SignInSchemaDto,
@@ -21,6 +23,8 @@ import AuthRootForm from "./auth-root-form";
 import PasswordInput from "./password-input";
 
 const SignInForm = () => {
+  const signInMutation = useSignInMutation();
+
   const form = useForm<SignInSchemaDto>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -30,7 +34,7 @@ const SignInForm = () => {
   });
 
   async function onSubmit(values: SignInSchemaDto) {
-    console.log(values);
+    await signInMutation.mutateAsync(values);
   }
 
   return (
@@ -67,7 +71,13 @@ const SignInForm = () => {
           </CardContent>
           <CardFooter className="flex flex-col gap-2">
             <Button type="submit" className="w-full">
-              Entrar
+              {signInMutation.isPending ? (
+                <>
+                  Entrando <Spinner />
+                </>
+              ) : (
+                <>Entrar</>
+              )}
             </Button>
           </CardFooter>
         </form>

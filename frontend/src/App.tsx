@@ -1,5 +1,7 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { Toaster } from "sonner";
 
+import ReactQueryProvider from "./providers/react-query";
 import { routeTree } from "./route-tree.gen";
 
 const router = createRouter({ routeTree });
@@ -13,7 +15,10 @@ declare module "@tanstack/react-router" {
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <ReactQueryProvider>
+        <RouterProvider router={router} />
+        <Toaster richColors/>
+      </ReactQueryProvider>
     </>
   );
 }
