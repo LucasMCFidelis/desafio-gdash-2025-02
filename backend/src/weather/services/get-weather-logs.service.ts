@@ -3,9 +3,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { FilterQuery } from 'mongoose';
 
 import { GetWeatherLogsRepository } from '../repositories/get-weather-logs.repository';
-import { WeatherLean } from '../Schema/weather.schema';
+import { WeatherDocument, WeatherLean } from '../Schema/weather.schema';
 
 @Injectable()
 export class GetWeatherLogService {
@@ -13,8 +14,27 @@ export class GetWeatherLogService {
     private readonly getWeatherLogRepository: GetWeatherLogsRepository,
   ) {}
 
-  async findAll(): Promise<Array<WeatherLean>> {
-    return await this.getWeatherLogRepository.getAll();
+  async findMany(params: {
+    city?: string;
+    date?: string;
+  }): Promise<Array<WeatherLean>> {
+    const where: FilterQuery<WeatherDocument> = {};
+
+    if (params.city) {
+      where.location = params.city;
+    }
+
+    if (params.date) {
+      const dayStart = new Date(params.date);
+      dayStart.setHours(0, 0, 0, 0);
+
+      const dayEnd = new Date(params.date);
+      dayEnd.setHours(23, 59, 59, 999);
+
+      where.timestamp = { $gte: dayStart, $lte: dayEnd };
+    }
+
+    return this.getWeatherLogRepository.getMany(where);
   }
 
   async findOne(weatherLogId?: string): Promise<WeatherLean> {

@@ -14,8 +14,8 @@ export class GetWeatherLogsRepository {
     @InjectModel(Weather.name) private weatherModel: Model<WeatherDocument>,
   ) {}
 
-  async getAll(): Promise<Array<WeatherLean>> {
-    const allWeathers = await this.weatherModel.find();
+  async getMany(where: Partial<WeatherLean>): Promise<Array<WeatherLean>> {
+    const allWeathers = await this.weatherModel.find(where);
 
     const mappedWeathers = allWeathers.map((weather) => {
       const obj = weather.toObject();

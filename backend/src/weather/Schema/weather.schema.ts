@@ -5,8 +5,8 @@ export type WeatherDocument = HydratedDocument<Weather>;
 
 @Schema({ timestamps: false })
 export class Weather {
-  @Prop({ type: String, required: true })
-  timestamp: string;
+  @Prop({ type: Date, required: true })
+  timestamp: Date;
 
   @Prop({ type: String, required: true })
   location: string;

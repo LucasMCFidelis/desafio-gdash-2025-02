@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
 import { CreateWeatherLogDto } from './dto/create-weather-log.dto';
 import { WeatherLean } from './Schema/weather.schema';
@@ -18,8 +18,14 @@ export class WeatherController {
   }
 
   @Get()
-  async getAllLogs(): Promise<Array<WeatherLean>> {
-    return this.getWeatherLogService.findAll();
+  async getLogsByQuery(
+    @Query('city') city?: string,
+    @Query('date') date?: string,
+  ): Promise<Array<WeatherLean>> {
+    return this.getWeatherLogService.findMany({
+      city,
+      date,
+    });
   }
 
   @Get(':id')
