@@ -2,6 +2,7 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 
 import ReactQueryProvider from "./providers/react-query";
+import { ThemeProvider } from "./providers/theme-provider";
 import { routeTree } from "./route-tree.gen";
 
 const router = createRouter({ routeTree });
@@ -16,8 +17,10 @@ function App() {
   return (
     <>
       <ReactQueryProvider>
-        <RouterProvider router={router} />
-        <Toaster richColors/>
+        <ThemeProvider>
+          <RouterProvider router={router} />
+          <Toaster richColors />
+        </ThemeProvider>
       </ReactQueryProvider>
     </>
   );
