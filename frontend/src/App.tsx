@@ -3,6 +3,7 @@ import { Toaster } from "sonner";
 
 import ReactQueryProvider from "./providers/react-query";
 import { ThemeProvider } from "./providers/theme-provider";
+import { WeatherLogsProvider } from "./providers/weather-logs-provider";
 import { routeTree } from "./route-tree.gen";
 
 const router = createRouter({ routeTree });
@@ -18,8 +19,10 @@ function App() {
     <>
       <ReactQueryProvider>
         <ThemeProvider>
-          <RouterProvider router={router} />
-          <Toaster richColors />
+          <WeatherLogsProvider>
+            <RouterProvider router={router} />
+            <Toaster richColors />
+          </WeatherLogsProvider>
         </ThemeProvider>
       </ReactQueryProvider>
     </>

@@ -11,7 +11,7 @@ function RouteComponent() {
   return (
     <main className="h-screen space-y-6">
       <Header/>
-      <div className="flex flex-col flex-1 max-w-7xl mx-auto md:mt-10">
+      <div className="flex flex-col flex-1 max-w-11/12 mx-auto md:mt-10 bg-background">
         <Outlet />
       </div>
       <Footer />
