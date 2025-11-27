@@ -5,6 +5,8 @@ import { toast } from "sonner";
 
 import type { SignUpSchemaDto } from "@/pages/auth/-schemas/sign-up-schema";
 
+import { useCurrentUserContext } from "../contexts/current-user-context";
+
 const API_URL = `${import.meta.env.VITE_API_URL}`.replace(/\/+$/, "");
 const CREATE_USER_PATH_URL = "/user";
 
@@ -22,14 +24,16 @@ export const getUseSignUpMutationQueryKey = () => ["create-user"] as const;
 
 export const useSignUpMutation = () => {
   const navigate = useNavigate();
+  const { setUser } = useCurrentUserContext();
 
   return useMutation({
     mutationKey: getUseSignUpMutationQueryKey(),
 
     mutationFn: (userData: SignUpSchemaDto) => createUser(userData),
 
-    onSuccess: () => {
+    onSuccess: (user) => {
       toast.success("Usuário criado com sucesso!");
+      setUser({ _id: user._id, email: user.email, name: user.name });
       navigate({ to: "/" });
     },
 
@@ -44,7 +48,6 @@ export const useSignUpMutation = () => {
           toast.error("Falha inesperada ao criar conta");
           return;
         }
-        
       }
 
       toast.error("Erro, tente novamente!");

@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_app")({
 
 function RouteComponent() {
   return (
-    <main className="h-screen space-y-6">
+    <main className="flex flex-col h-screen space-y-6">
       <Header/>
       <div className="flex flex-col flex-1 max-w-11/12 mx-auto md:mt-10 bg-background">
         <Outlet />

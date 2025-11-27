@@ -5,6 +5,8 @@ import { toast } from "sonner";
 
 import type { SignInSchemaDto } from "@/pages/auth/-schemas/sign-in-schema";
 
+import { useCurrentUserContext } from "../contexts/current-user-context";
+
 const API_URL = `${import.meta.env.VITE_API_URL}`.replace(/\/+$/, "");
 const LOGIN_PATH_URL = "/auth/login";
 
@@ -21,6 +23,7 @@ export const getUseSignInMutationQueryKey = () => ["sign-in"] as const;
 
 export const useSignInMutation = () => {
   const navigate = useNavigate();
+  const { setUser } = useCurrentUserContext();
 
   return useMutation({
     mutationKey: getUseSignInMutationQueryKey(),
@@ -28,7 +31,8 @@ export const useSignInMutation = () => {
     mutationFn: (userCredentials: SignInSchemaDto) =>
       signInUser(userCredentials),
 
-    onSuccess: () => {
+    onSuccess: (user) => {
+      setUser({ _id: user._id, email: user.email, name: user.name });
       toast.success("Login realizado com sucesso!");
       navigate({ to: "/" });
     },
