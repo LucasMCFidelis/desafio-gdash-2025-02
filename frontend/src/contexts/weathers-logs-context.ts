@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 import type { WeatherRecord } from "@/interfaces/weather-record";
 
 interface WeathersLogsContextProps {
-  currentDayData: WeatherRecord;
+  currentDayData?: WeatherRecord;
   processedWeatherLogsData: Array<WeatherRecord>;
   isPendingWeatherLogsData: boolean
 }
