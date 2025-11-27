@@ -14,10 +14,11 @@ export class AuthController {
     @Body() loginData: LoginAuthDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { userToken } = await this.loginAuthService.execute(loginData);
+    const { userToken, ...user } =
+      await this.loginAuthService.execute(loginData);
 
     setAuthCookie(res, userToken);
 
-    return { message: 'logged_in' };
+    return { message: 'logged_in', ...user };
   }
 }

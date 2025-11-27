@@ -16,10 +16,10 @@ export class LoginAuthService {
     userEmail,
     passwordProvided,
   }: LoginAuthDto): Promise<{ userToken: string }> {
-    const user = await this.getUserService.find({ userEmail });
+    const { password, ...user } = await this.getUserService.find({ userEmail });
 
-    await comparePasswords(passwordProvided, user.password);
+    await comparePasswords(passwordProvided, password);
 
-    return { userToken: this.tokenAuthService.generateToken(user) };
+    return { userToken: this.tokenAuthService.generateToken(user), ...user };
   }
 }

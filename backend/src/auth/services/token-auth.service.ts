@@ -1,6 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserLean } from 'src/user/Schema/user.schema';
 
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
 
@@ -8,14 +7,8 @@ import { JwtPayload } from '../interfaces/jwt-payload.interface';
 export class TokenAuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  generateToken(user: UserLean): string {
-    const payload: JwtPayload = {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    };
-
-    return this.jwtService.sign(payload);
+  generateToken(userPayload: JwtPayload): string {
+    return this.jwtService.sign(userPayload);
   }
 
   async validateToken(userToken: string): Promise<JwtPayload> {
