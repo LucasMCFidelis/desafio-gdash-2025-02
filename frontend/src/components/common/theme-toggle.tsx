@@ -2,7 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 
-import { useThemeContext } from "@/contexts/theme-context";
+import { useThemeContext } from "@/hooks/contexts/theme-context";
 
 import { Button } from "../ui/button";
 

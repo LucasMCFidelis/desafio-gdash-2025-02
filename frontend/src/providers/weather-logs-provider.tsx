@@ -1,4 +1,4 @@
-import { WeathersLogsContext } from "@/contexts/weathers-logs-context";
+import { WeathersLogsContext } from "@/hooks/contexts/weathers-logs-context";
 import { useWeatherLogQuery } from "@/hooks/query/use-weather-log-query";
 
 export const WeatherLogsProvider = ({
@@ -12,8 +12,7 @@ export const WeatherLogsProvider = ({
     useWeatherLogQuery(date);
 
   const currentDayData =
-    processedWeatherLogsData &&
-    processedWeatherLogsData[processedWeatherLogsData.length - 1];
+    processedWeatherLogsData?.[processedWeatherLogsData.length - 1] ?? null;
 
   return (
     <WeathersLogsContext.Provider

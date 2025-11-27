@@ -5,10 +5,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useWeathersLogsContext } from "@/contexts/weathers-logs-context";
+import { useWeathersLogsContext } from "@/hooks/contexts/weathers-logs-context";
 
 const CurrentDayDataInformation = () => {
   const { currentDayData } = useWeathersLogsContext();
+
+  if (!currentDayData) return;
 
   return (
     <>
@@ -46,7 +48,9 @@ const CurrentDayDataInformation = () => {
             <CardDescription>Em graus Celsius</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-xl md:text-4xl font-bold text-chart-3">{"?"}°C</p>
+            <p className="text-xl md:text-4xl font-bold text-chart-3">
+              {"?"}°C
+            </p>
           </CardContent>
         </Card>
         <Card className="shadow-md">
