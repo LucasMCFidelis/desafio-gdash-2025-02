@@ -5,5 +5,5 @@ def build_weather_url() -> str:
     return (
         f"https://api.openweathermap.org/data/2.5/weather"
         f"?lat={LATITUDE}&lon={LONGITUDE}"
-        f"&appid={API_KEY}&lang=pt-br&units=metric"
+        f"&appid={API_KEY}&lang=pt_br&units=metric"
     )
