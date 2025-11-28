@@ -18,6 +18,9 @@ export class Weather {
   temperature: number;
 
   @Prop({ type: Number, required: true })
+  feels_like: number;
+
+  @Prop({ type: Number, required: true })
   humidity: number;
 }
 

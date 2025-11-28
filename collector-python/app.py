@@ -4,6 +4,7 @@ from src.sender import publish_weather_message
 
 if __name__ == "__main__":
     raw_data = run_collector()
+    print(raw_data)
     formatted_data = format_weather_payload(raw_data)
     
     print(formatted_data.model_dump_json())  

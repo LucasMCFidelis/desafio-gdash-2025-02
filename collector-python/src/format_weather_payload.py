@@ -6,6 +6,7 @@ class WeatherRecord(BaseModel):
     location: str
     condition: str
     temperature: float
+    feels_like: float
     humidity: float
 
 def format_weather_payload(data: dict) -> WeatherRecord:
@@ -14,5 +15,6 @@ def format_weather_payload(data: dict) -> WeatherRecord:
         location=data["name"],
         condition=data["weather"][0]["description"],
         temperature=data["main"]["temp"],
+        feels_like=data["main"]["feels_like"],
         humidity=data["main"]["humidity"]
     )

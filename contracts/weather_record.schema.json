@@ -6,7 +6,8 @@
     "location": { "type": "string" },
     "condition": { "type": "string" },
     "temperature": { "type": "number" },
+    "feels_like": { "type": "number" },
     "humidity": { "type": "number" }
   },
-  "required": ["timestamp", "location", "condition", "temperature", "humidity"]
+  "required": ["timestamp", "location", "condition", "temperature", "feels_like", "humidity"]
 }

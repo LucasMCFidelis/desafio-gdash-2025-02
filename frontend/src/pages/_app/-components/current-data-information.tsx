@@ -7,27 +7,27 @@ import {
 } from "@/components/ui/card";
 import { useWeathersLogsContext } from "@/hooks/contexts/weathers-logs-context";
 
-const CurrentDayDataInformation = () => {
-  const { currentDayData } = useWeathersLogsContext();
+const CurrentLogDataInformation = () => {
+  const { currentLogData } = useWeathersLogsContext();
 
-  if (!currentDayData) return;
+  if (!currentLogData) return;
 
   return (
     <>
       <h1 className="text-xl md:text-3xl font-bold text-foreground">
-        Dashboard de Clima - {currentDayData.location}
+        Dashboard de Clima - {currentLogData.location}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="shadow-md">
           <CardHeader>
             <CardTitle className="text-primary">Condição Atual</CardTitle>
             <CardDescription>
-              Última atualização: {currentDayData.time}
+              Última atualização: {currentLogData.time}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-xl md:text-2xl font-semibold capitalize">
-              {currentDayData.condition}
+              {currentLogData.condition}
             </p>
           </CardContent>
         </Card>
@@ -38,7 +38,7 @@ const CurrentDayDataInformation = () => {
           </CardHeader>
           <CardContent>
             <p className="text-xl md:text-4xl font-bold text-chart-1">
-              {currentDayData.temperature}°C
+              {currentLogData.temperature}°C
             </p>
           </CardContent>
         </Card>
@@ -49,7 +49,7 @@ const CurrentDayDataInformation = () => {
           </CardHeader>
           <CardContent>
             <p className="text-xl md:text-4xl font-bold text-chart-3">
-              {"?"}°C
+              {currentLogData.feels_like}°C
             </p>
           </CardContent>
         </Card>
@@ -60,7 +60,7 @@ const CurrentDayDataInformation = () => {
           </CardHeader>
           <CardContent>
             <p className="text-xl md:text-4xl font-bold text-chart-2">
-              {currentDayData.humidity}%
+              {currentLogData.humidity}%
             </p>
           </CardContent>
         </Card>
@@ -69,4 +69,4 @@ const CurrentDayDataInformation = () => {
   );
 };
 
-export default CurrentDayDataInformation;
+export default CurrentLogDataInformation;

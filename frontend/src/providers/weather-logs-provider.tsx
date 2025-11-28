@@ -6,20 +6,24 @@ export const WeatherLogsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const date = new Date().toISOString().split("T")[0];
+  const currentDate = new Date().toISOString().split("T")[0];
 
-  const { data: processedWeatherLogsData, isPending } =
-    useWeatherLogQuery(date);
+  const {
+    data: currentWeatherLogsData,
+    isPending,
+    isRefetchError,
+  } = useWeatherLogQuery(currentDate);
 
-  const currentDayData =
-    processedWeatherLogsData?.[processedWeatherLogsData.length - 1] ?? null;
+  const currentLogData =
+    currentWeatherLogsData?.[currentWeatherLogsData.length - 1] ?? null;
 
   return (
     <WeathersLogsContext.Provider
       value={{
-        currentDayData,
-        processedWeatherLogsData: processedWeatherLogsData || [],
-        isPendingWeatherLogsData: isPending,
+        currentDate,
+        currentLogData,
+        currentWeatherLogsData: currentWeatherLogsData || [],
+        isPendingWeatherLogsData: isPending || isRefetchError,
       }}
     >
       {children}

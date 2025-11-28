@@ -3,9 +3,10 @@ export interface WeatherRecordBase {
   location: string;
   condition: string;
   temperature: number;
+  feels_like: number;
   humidity: number;
 }
 
 export interface WeatherRecord extends WeatherRecordBase {
-  time: string
+  time: string;
 }

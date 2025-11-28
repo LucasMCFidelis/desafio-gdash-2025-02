@@ -14,5 +14,8 @@ export class CreateWeatherLogDto {
   temperature: number;
 
   @IsNumber()
+  feels_like: number;
+
+  @IsNumber()
   humidity: number;
 }

@@ -23,6 +23,7 @@ type WeatherMessage struct {
 	Location    string  `json:"location"`
 	Condition   string  `json:"condition"`
 	Temperature float64 `json:"temperature"`
+	FeelsLike 	float64 `json:"feels_like"`
 	Humidity    float64 `json:"humidity"`
 }
 
@@ -69,15 +70,6 @@ func sendWeatherPost(msg WeatherMessage) error {
 }
 
 func main() {
-	fmt.Println(apiURL)
-	fmt.Println(apiURL)
-	fmt.Println(apiURL)
-	fmt.Println(apiURL)
-	fmt.Println(apiURL)
-	fmt.Println(apiURL)
-	fmt.Println(apiURL)
-	fmt.Println(apiURL)
-	fmt.Println(apiURL)
 	conn, err := connectWithRetry(rabbitURL, 10, 3*time.Second)
 	failOnError(err, "connect rabbit")
 	defer conn.Close()

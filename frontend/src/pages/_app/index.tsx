@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   CartesianGrid,
@@ -8,6 +9,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -21,7 +23,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { Spinner } from "@/components/ui/spinner";
 import { useWeathersLogsContext } from "@/hooks/contexts/weathers-logs-context";
+import { getWeatherLogQueryKey } from "@/hooks/query/use-weather-log-query";
 
 import CurrentDayDataInformation from "./-components/current-data-information";
 import SkeletonDashboard from "./-components/skeleton-dashboard";
@@ -46,10 +50,11 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function RouteComponent() {
-  const { processedWeatherLogsData, isPendingWeatherLogsData } =
+  const { currentDate, currentWeatherLogsData, isPendingWeatherLogsData } =
     useWeathersLogsContext();
+  const queryClient = useQueryClient();
 
-  if (isPendingWeatherLogsData || !processedWeatherLogsData) {
+  if (isPendingWeatherLogsData || !currentWeatherLogsData) {
     return <SkeletonDashboard />;
   }
 
@@ -58,7 +63,26 @@ function RouteComponent() {
       <div className="mx-auto space-y-6">
         <CurrentDayDataInformation />
 
-        {processedWeatherLogsData && processedWeatherLogsData.length > 0 && (
+        <div className="flex gap-3">
+          <Button
+            onClick={() =>
+              queryClient.invalidateQueries({
+                queryKey: getWeatherLogQueryKey(currentDate),
+              })
+            }
+          >
+            {isPendingWeatherLogsData ? (
+              <>
+                Recarregando dados <Spinner />
+              </>
+            ) : (
+              <>Recarregar dados</>
+            )}
+          </Button>
+          <Button>Exportar dados completos</Button>
+        </div>
+
+        {currentWeatherLogsData && currentWeatherLogsData.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="shadow-md">
               <CardHeader>
@@ -73,7 +97,7 @@ function RouteComponent() {
                   className="h-[300px] w-full"
                 >
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={processedWeatherLogsData}>
+                    <LineChart data={currentWeatherLogsData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="time" />
                       <YAxis />
@@ -112,7 +136,7 @@ function RouteComponent() {
                   className="h-[300px] w-full"
                 >
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={processedWeatherLogsData}>
+                    <LineChart data={currentWeatherLogsData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="time" />
                       <YAxis />
