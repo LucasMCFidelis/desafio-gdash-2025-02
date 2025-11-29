@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { InsightsModule } from './insights/insights.module';
 import { UserModule } from './user/user.module';
 import { WeatherModule } from './weather/weather.module';
 
@@ -23,6 +24,7 @@ if (!DATABASE_URL) {
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     WeatherModule,
+    InsightsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
