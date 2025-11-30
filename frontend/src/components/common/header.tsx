@@ -1,24 +1,52 @@
 import { useNavigate } from "@tanstack/react-router";
-import { memo } from "react";
+import {
+  type ButtonHTMLAttributes, memo
+} from "react";
 
 import { useCurrentUserContext } from "@/hooks/contexts/current-user-context";
+import { cn } from "@/lib/utils";
 
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
 import ThemeToggle from "./theme-toggle";
 
+interface HeaderButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  textContent: string;
+}
+
+const HeaderButton = ({
+  onClick,
+  textContent,
+  className,
+}: HeaderButtonProps) => {
+  return (
+    <Button
+      variant={"link"}
+      name={textContent.toLowerCase()}
+      onClick={onClick}
+      className={cn("font-bold", className)}
+    >
+      {textContent}
+    </Button>
+  );
+};
+
 const Header = () => {
   const navigate = useNavigate();
   const { user } = useCurrentUserContext();
+
   return (
     <header className="flex justify-between py-4 px-6 bg-card border-b-2 shadow-md">
-      <Button
-        variant={"link"}
-        onClick={() => navigate({ href: "/" })}
-        className="font-bold"
-      >
-        Inicio
-      </Button>
+      <div className="flex">
+        <HeaderButton
+          textContent="Inicio"
+          onClick={() => navigate({ href: "/" })}
+        />
+        <HeaderButton
+          textContent="Insights"
+          onClick={() => navigate({ href: "/insights" })}
+        />
+      </div>
       <div className="flex items-center gap-3">
         <ThemeToggle />
         {user ? (

@@ -13,6 +13,7 @@ import { Route as AppLayoutRouteImport } from './pages/_app/layout'
 import { Route as AuthIndexRouteImport } from './pages/auth/index'
 import { Route as AppIndexRouteImport } from './pages/_app/index'
 import { Route as AppProfileIndexRouteImport } from './pages/_app/profile/index'
+import { Route as AppInsightsIndexRouteImport } from './pages/_app/insights/index'
 
 const AppLayoutRoute = AppLayoutRouteImport.update({
   id: '/_app',
@@ -33,15 +34,22 @@ const AppProfileIndexRoute = AppProfileIndexRouteImport.update({
   path: '/profile/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
+const AppInsightsIndexRoute = AppInsightsIndexRouteImport.update({
+  id: '/insights/',
+  path: '/insights/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/auth': typeof AuthIndexRoute
+  '/insights': typeof AppInsightsIndexRoute
   '/profile': typeof AppProfileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/auth': typeof AuthIndexRoute
+  '/insights': typeof AppInsightsIndexRoute
   '/profile': typeof AppProfileIndexRoute
 }
 export interface FileRoutesById {
@@ -49,14 +57,21 @@ export interface FileRoutesById {
   '/_app': typeof AppLayoutRouteWithChildren
   '/_app/': typeof AppIndexRoute
   '/auth/': typeof AuthIndexRoute
+  '/_app/insights/': typeof AppInsightsIndexRoute
   '/_app/profile/': typeof AppProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/profile'
+  fullPaths: '/' | '/auth' | '/insights' | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/profile'
-  id: '__root__' | '/_app' | '/_app/' | '/auth/' | '/_app/profile/'
+  to: '/' | '/auth' | '/insights' | '/profile'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/_app/'
+    | '/auth/'
+    | '/_app/insights/'
+    | '/_app/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -94,16 +109,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_app/insights/': {
+      id: '/_app/insights/'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof AppInsightsIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
   }
 }
 
 interface AppLayoutRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppInsightsIndexRoute: typeof AppInsightsIndexRoute
   AppProfileIndexRoute: typeof AppProfileIndexRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppInsightsIndexRoute: AppInsightsIndexRoute,
   AppProfileIndexRoute: AppProfileIndexRoute,
 }
 
