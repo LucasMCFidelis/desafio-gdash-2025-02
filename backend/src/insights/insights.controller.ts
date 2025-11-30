@@ -1,6 +1,10 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 
 import { CreateWeatherInsightDto } from './dto/create-weather-insight.dto';
+import {
+  QueryWeatherInsightDto,
+  QueryWeatherInsightsRangeDto,
+} from './dto/query-weather-insight.dto';
 import { WeatherInsightLean } from './Schema/insight.schema';
 import { CreateWeatherInsightService } from './services/create-weather-insight.service';
 import { GetWeatherInsightService } from './services/get-weather-insight.service';
@@ -21,12 +25,15 @@ export class InsightsController {
 
   @Get()
   async getInsightByQuery(
-    @Query('city') city: string = 'Junco do Seridó',
-    @Query('date') date: string,
+    @Query() query: QueryWeatherInsightDto,
   ): Promise<WeatherInsightLean> {
-    return this.getWeatherInsightsService.findOne({
-      city,
-      date,
-    });
+    return this.getWeatherInsightsService.findOne(query);
+  }
+
+  @Get('search')
+  async search(
+    @Query() query: QueryWeatherInsightsRangeDto,
+  ): Promise<WeatherInsightLean[]> {
+    return this.getWeatherInsightsService.findToRange(query);
   }
 }

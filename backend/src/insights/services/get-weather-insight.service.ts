@@ -4,7 +4,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { QueryWeatherInsightDto } from '../dto/query-weather-insight.dto';
+import {
+  QueryWeatherInsightDto,
+  QueryWeatherInsightsRangeDto,
+} from '../dto/query-weather-insight.dto';
 import { GetWeatherInsightRepository } from '../repositories/get-weather-insight.repository';
 import { WeatherInsightLean } from '../Schema/insight.schema';
 
@@ -18,10 +21,6 @@ export class GetWeatherInsightService {
     city,
     date,
   }: QueryWeatherInsightDto): Promise<WeatherInsightLean> {
-    if (!date || !city) {
-      throw new BadRequestException('date e city são obrigatórios');
-    }
-
     const weatherInsight = await this.getWeatherInsightRepository.getOne({
       date,
       city,
@@ -32,5 +31,22 @@ export class GetWeatherInsightService {
     }
 
     return weatherInsight;
+  }
+
+  async findToRange(
+    query: QueryWeatherInsightsRangeDto,
+  ): Promise<Array<WeatherInsightLean>> {
+    const { month, year, start, end } = query;
+
+    const isMonthYear = month && year;
+    const isInterval = start && end;
+
+    if (!isMonthYear && !isInterval) {
+      throw new BadRequestException(
+        'Você deve fornecer month + year ou start + end.',
+      );
+    }
+
+    return this.getWeatherInsightRepository.findMany(query);
   }
 }
