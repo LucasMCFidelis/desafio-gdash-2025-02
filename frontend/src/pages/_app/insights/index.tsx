@@ -26,23 +26,23 @@ export const Route = createFileRoute("/_app/insights/")({
 const chartConfig = {
   "summary.avg_temperature": {
     label: "Temperatura Média (°C)",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   "summary.avg_feels_like": {
     label: "Sensação Térmica Média (°C)",
-    color: "hsl(var(--chart-3))",
+    color: "var(--chart-4)",
   },
   "summary.avg_humidity": {
     label: "Umidade Média (%)",
-    color: "hsl(var(--chart-2))",
+    color: "var(--chart-2)",
   },
   "summary.max_temperature": {
     label: "Temperatura Máxima (°C)",
-    color: "hsl(var(--chart-5))",
+    color: "var(--chart-5)",
   },
   "summary.min_temperature": {
     label: "Temperatura Mínima (°C)",
-    color: "hsl(var(--chart-3))",
+    color: "var(--chart-3)",
   },
 } satisfies ChartConfig;
 
@@ -85,27 +85,27 @@ function RouteComponent() {
                   <Line
                     type="monotone"
                     dataKey="summary.avg_temperature"
-                    stroke="var(--color-chart-1)"
+                    stroke={chartConfig["summary.avg_temperature"].color}
                     strokeWidth={2}
                   />
                   <Line
                     type="monotone"
                     dataKey="summary.max_temperature"
-                    stroke="var(--color-chart-5)"
+                    stroke={chartConfig["summary.max_temperature"].color}
                     strokeWidth={2}
                   />
                   <Line
                     type="monotone"
                     dataKey="summary.min_temperature"
-                    stroke="var(--color-chart-3)"
+                    stroke={chartConfig["summary.min_temperature"].color}
                     strokeWidth={2}
                   />
                   <Line
                     type="monotone"
                     dataKey="summary.avg_feels_like"
-                    stroke="var(--color-chart-4)"
+                    stroke={chartConfig["summary.avg_feels_like"].color}
                     strokeWidth={2}
-                    dot={{ fill: "var(--color-chart-4)" }}
+                    dot={{ fill: chartConfig["summary.avg_feels_like"].color}}
                     strokeDasharray="5 5"
                   />
                 </LineChart>

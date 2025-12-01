@@ -31,15 +31,15 @@ export const Route = createFileRoute("/_app/")({
 const chartConfig = {
   temperature: {
     label: "Temperatura (°C)",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
-  feelsLike: {
+  feels_like: {
     label: "Sensação Térmica (°C)",
-    color: "hsl(var(--chart-3))",
+    color: "var(--chart-4)",
   },
   humidity: {
     label: "Umidade (%)",
-    color: "hsl(var(--chart-2))",
+    color: "var(--chart-2)",
   },
 } satisfies ChartConfig;
 
@@ -79,7 +79,7 @@ function RouteComponent() {
         {currentWeatherLogsData && currentWeatherLogsData.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <ChartCardRoot
-              title="Temperatura e Sensação Térmica ao Longo do Tempo"
+              title="Temperatura e Sensação Térmica ao Longo do Dia"
               description="Dados das últimas horas"
             >
               <ChartContainer config={chartConfig} className="h-[300px] w-full">
@@ -92,16 +92,19 @@ function RouteComponent() {
                     <Line
                       type="monotone"
                       dataKey="temperature"
-                      stroke="var(--color-chart-1)"
+                      stroke={chartConfig.temperature.color}
                       strokeWidth={2}
-                      dot={{ fill: "var(--color-chart-1)" }}
+                      dot={{ fill: chartConfig.temperature.color }}
                     />
                     <Line
                       type="monotone"
-                      dataKey="feelsLike"
-                      stroke="var(--color-chart-3)"
+                      dataKey="feels_like"
+                      stroke={chartConfig.feels_like.color}
                       strokeWidth={2}
-                      dot={{ fill: "var(--color-chart-3)" }}
+                      dot={{
+                        fill: chartConfig.feels_like.color,
+                        opacity: "50%",
+                      }}
                       strokeDasharray="5 5"
                     />
                   </LineChart>
@@ -110,7 +113,7 @@ function RouteComponent() {
             </ChartCardRoot>
 
             <ChartCardRoot
-              title="Umidade ao Longo do Tempo"
+              title="Umidade ao Longo do Dia"
               description="Dados das últimas horas"
             >
               <ChartContainer config={chartConfig} className="h-[300px] w-full">
@@ -123,9 +126,9 @@ function RouteComponent() {
                     <Line
                       type="monotone"
                       dataKey="humidity"
-                      stroke="var(--color-chart-2)"
+                      stroke={chartConfig.humidity.color}
                       strokeWidth={2}
-                      dot={{ fill: "var(--color-chart-2)" }}
+                      dot={{ fill: chartConfig.humidity.color }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
