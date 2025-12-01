@@ -7,8 +7,8 @@ export const setAuthCookie = (
 ) => {
   res.cookie(name, token, {
     httpOnly: true,
-    secure: false,
-    sameSite: 'strict',
+    secure: true,
+    sameSite: 'none',
     path: '/',
     maxAge: 1000 * 60 * 60,
   });

@@ -16,6 +16,7 @@ import { setAuthCookie } from 'src/common/utils/cookie.helpers';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 import { UpdateUserDto } from './dto/update-user.dto';
+import { type UserQueryOptions } from './interfaces/user-query-options.interface';
 import { User, UserLean } from './Schema/user.schema';
 import { CreateUserService } from './services/create-user.service';
 import { DeleteUserService } from './services/delete-user.service';
@@ -46,20 +47,14 @@ export class UserController {
 
   @Get()
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
-  async find(
-    @Query('userId') userId?: string,
-    @Query('userEmail') userEmail?: string,
-  ): Promise<User> {
-    return this.getUserService.find({ userId, userEmail });
+  async find(@Query() query: UserQueryOptions): Promise<User> {
+    return this.getUserService.find(query);
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard, AuthorizationGuard)
-  async delete(
-    @Query('userId') userId?: string,
-    @Query('userEmail') userEmail?: string,
-  ): Promise<void> {
-    return this.deleteUserService.execute({ userId, userEmail });
+  async delete(@Query() query: UserQueryOptions): Promise<void> {
+    return this.deleteUserService.execute(query);
   }
 
   @Put()

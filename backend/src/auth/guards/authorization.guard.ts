@@ -20,7 +20,7 @@ export class AuthorizationGuard implements CanActivate {
     }
 
     if (
-      (targetUserId && user.id !== targetUserId) ||
+      (targetUserId && user._id !== targetUserId) ||
       (targetUserEmail && user.email !== targetUserEmail)
     ) {
       throw new ForbiddenException(

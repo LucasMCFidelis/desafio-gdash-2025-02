@@ -1,5 +1,4 @@
 export interface CurrentUserPayload {
-  id: string;
+  _id: string;
   email: string;
-  role: string;
 }
