@@ -42,6 +42,7 @@ services:
       - WEATHER_API_KEY=${WEATHER_API_KEY}
       - LATITUDE=${LATITUDE}
       - LONGITUDE=${LONGITUDE}
+      - GROQ_API_KEY=${GROQ_API_KEY}
 
   worker:
     build: ./worker-go
