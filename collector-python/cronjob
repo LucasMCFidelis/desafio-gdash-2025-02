@@ -1,2 +1,2 @@
-* * * * * . /etc/environment && /usr/local/bin/python /app/app.py >> /var/log/cron.log 2>&1
+0 * * * * . /etc/environment && /usr/local/bin/python /app/app.py >> /var/log/cron.log 2>&1
 59 23 * * * . /etc/environment && python /app/daily_insights.py >> /var/log/cron.log 2>&1

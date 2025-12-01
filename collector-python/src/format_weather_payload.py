@@ -1,5 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from pydantic import BaseModel
+
+BR_TZ = timezone(timedelta(hours=-3))
 
 class WeatherRecord(BaseModel):
     timestamp: str
@@ -10,8 +12,10 @@ class WeatherRecord(BaseModel):
     humidity: float
 
 def format_weather_payload(data: dict) -> WeatherRecord:
+    local_dt = datetime.fromtimestamp(data["dt"], tz=BR_TZ)
+
     return WeatherRecord(
-        timestamp=datetime.utcfromtimestamp(data["dt"]).isoformat() + "Z",
+        timestamp=local_dt.isoformat(),
         location=data["name"],
         condition=data["weather"][0]["description"],
         temperature=data["main"]["temp"],
