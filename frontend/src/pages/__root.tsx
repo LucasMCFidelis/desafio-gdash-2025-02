@@ -1,4 +1,5 @@
 import { createRootRoute, HeadContent, Outlet } from "@tanstack/react-router";
+import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 import * as React from "react";
 
 export const Route = createRootRoute({
@@ -9,7 +10,9 @@ function RootComponent() {
   return (
     <React.Fragment>
       <HeadContent />
-      <Outlet />
+      <NuqsAdapter>
+        <Outlet />
+      </NuqsAdapter>
     </React.Fragment>
   );
 }

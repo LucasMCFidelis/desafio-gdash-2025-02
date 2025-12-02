@@ -46,6 +46,10 @@ const Header = () => {
           textContent="Insights"
           onClick={() => navigate({ href: "/insights" })}
         />
+        <HeaderButton
+          textContent="Pokémons"
+          onClick={() => navigate({ href: "/pokemons" })}
+        />
       </div>
       <div className="flex items-center gap-3">
         <ThemeToggle />
