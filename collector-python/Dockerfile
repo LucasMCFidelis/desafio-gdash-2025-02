@@ -27,5 +27,7 @@ RUN crontab /etc/cron.d/collector-cron
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Usar entrypoint que exporta as envs antes de iniciar o cron
+# Expor porta para Render
+EXPOSE 5000
+
 ENTRYPOINT ["/entrypoint.sh"]
