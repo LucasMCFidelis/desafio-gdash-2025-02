@@ -9,4 +9,6 @@ COPY . .
 
 RUN go build -o worker .
 
+EXPOSE 10000
+
 CMD ["./worker", "-f"]

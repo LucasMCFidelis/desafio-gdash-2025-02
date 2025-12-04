@@ -8,6 +8,7 @@ import (
 	"time"
 
 	configs "worker/src"
+	server "worker/src/server"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
@@ -70,6 +71,8 @@ func sendWeatherPost(msg WeatherMessage) error {
 }
 
 func main() {
+	go server.Start()
+
 	conn, err := connectWithRetry(rabbitURL, 10, 3*time.Second)
 	failOnError(err, "connect rabbit")
 	defer conn.Close()
