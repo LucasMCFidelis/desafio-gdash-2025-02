@@ -55,16 +55,28 @@ func connectWithRetry(url string, retries int, delay time.Duration) (*amqp.Conne
 	return nil, err
 }
 
-func waitForAPI(url string) {
-    for {
-        resp, err := httpClient.Get(url)
-        if err == nil && resp.StatusCode == 200 {
-            fmt.Println("API is ready")
-            return
-        }
-        fmt.Println("Waiting for API...")
-        time.Sleep(3 * time.Second)
-    }
+func waitForAPI(apiURL string) error {
+	client := &http.Client{
+		Timeout: 90 * time.Second,
+	}
+
+	fmt.Printf("Waiting for API at %s...\n", apiURL)
+
+	req, _ := http.NewRequest("GET", apiURL, nil)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("API failed to wake up: %w", err)
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 200 && resp.StatusCode < 500 {
+		fmt.Println("API is ready!")
+		return nil
+	}
+
+	return fmt.Errorf("API returned unexpected status: %d", resp.StatusCode)
 }
 
 func sendWeatherPost(msg WeatherMessage) error {
