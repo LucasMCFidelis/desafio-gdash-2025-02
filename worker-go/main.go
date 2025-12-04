@@ -17,6 +17,10 @@ var (
 	rabbitURL = configs.GetEnv("RABBITMQ_URL")
 	queueName = configs.GetEnv("QUEUE_NAME")
 	apiURL    = configs.GetEnv("API_URL") + "/weather/logs"
+
+	httpClient = &http.Client{
+        Timeout: 15 * time.Second,
+    }
 )
 
 type WeatherMessage struct {
@@ -51,27 +55,53 @@ func connectWithRetry(url string, retries int, delay time.Duration) (*amqp.Conne
 	return nil, err
 }
 
-func sendWeatherPost(msg WeatherMessage) error {
-	jsonData, err := json.Marshal(msg)
-	if err != nil {
-		return err
-	}
-
-	resp, err := http.Post(apiURL, "application/json", bytes.NewBuffer(jsonData))
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return fmt.Errorf("failed to post weather log, status code: %d", resp.StatusCode)
-	}
-
-	return nil
+func waitForAPI(url string) {
+    for {
+        resp, err := httpClient.Get(url)
+        if err == nil && resp.StatusCode == 200 {
+            fmt.Println("API is ready")
+            return
+        }
+        fmt.Println("Waiting for API...")
+        time.Sleep(3 * time.Second)
+    }
 }
+
+func sendWeatherPost(msg WeatherMessage) error {
+    jsonData, err := json.Marshal(msg)
+    if err != nil {
+        return err
+    }
+
+    maxRetries := 5
+    backoff := 2 * time.Second
+
+    for attempt := 1; attempt <= maxRetries; attempt++ {
+        resp, err := httpClient.Post(apiURL, "application/json", bytes.NewBuffer(jsonData))
+        if err == nil && resp.StatusCode >= 200 && resp.StatusCode < 300 {
+            resp.Body.Close()
+            return nil
+        }
+
+        if resp != nil {
+            resp.Body.Close()
+        }
+
+        fmt.Printf("POST failed (attempt %d/%d). Retrying in %v...\n",
+            attempt, maxRetries, backoff)
+
+        time.Sleep(backoff)
+        backoff *= 2
+    }
+
+    return fmt.Errorf("failed to POST after retries")
+}
+
 
 func main() {
 	go server.Start()
+
+	waitForAPI(configs.GetEnv("API_URL"))
 
 	conn, err := connectWithRetry(rabbitURL, 10, 3*time.Second)
 	failOnError(err, "connect rabbit")
