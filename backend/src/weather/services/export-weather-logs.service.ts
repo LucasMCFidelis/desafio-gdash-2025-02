@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Workbook, Worksheet } from 'exceljs';
 import { Model } from 'mongoose';
 
 import { Weather, WeatherDocument } from '../Schema/weather.schema';
@@ -96,5 +97,36 @@ export class WeatherExportService {
         feels_like: doc.feels_like,
         humidity: doc.humidity,
       }));
+  }
+
+  async exportXlsx(filters: ExportFilters): Promise<Workbook> {
+    const query = this.buildQuery(filters);
+
+    const docs = await this.weatherModel.find(query).lean().exec();
+
+    const workbook: Workbook = new Workbook();
+    const worksheet: Worksheet = workbook.addWorksheet('Weather Logs');
+
+    worksheet.columns = [
+      { header: 'Timestamp', key: 'timestamp', width: 25 },
+      { header: 'Location', key: 'location', width: 20 },
+      { header: 'Condition', key: 'condition', width: 20 },
+      { header: 'Temperature', key: 'temperature', width: 15 },
+      { header: 'Feels Like', key: 'feels_like', width: 15 },
+      { header: 'Humidity', key: 'humidity', width: 15 },
+    ];
+
+    for (const doc of docs) {
+      worksheet.addRow({
+        timestamp: doc.timestamp?.toISOString(),
+        location: doc.location,
+        condition: doc.condition,
+        temperature: doc.temperature,
+        feels_like: doc.feels_like,
+        humidity: doc.humidity,
+      });
+    }
+
+    return workbook;
   }
 }

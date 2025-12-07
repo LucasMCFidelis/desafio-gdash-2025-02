@@ -81,6 +81,40 @@ export class WeatherController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('export.xlsx')
+  async exportXlsx(
+    @Res() res: Response,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('location') location?: string,
+  ) {
+    try {
+      const filename = `weather_export_${new Date().toISOString()}.xlsx`;
+
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      );
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${filename}"`,
+      );
+
+      const workbook = await this.weatherExportService.exportXlsx({
+        from,
+        to,
+        location,
+      });
+
+      await workbook.xlsx.write(res);
+      res.end();
+    } catch (error) {
+      console.error(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Erro ao gerar XLSX');
+    }
+  }
+
   @Get(':id')
   async getLog(@Param('id') id?: string): Promise<WeatherLean> {
     return this.getWeatherLogService.findOne(id);
