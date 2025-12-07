@@ -1,5 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import type { DateRange } from "react-day-picker";
 import {
   CartesianGrid,
   Line,
@@ -10,14 +12,21 @@ import {
 } from "recharts";
 
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Spinner } from "@/components/ui/spinner";
 import { useWeathersLogsContext } from "@/hooks/contexts/weathers-logs-context";
+import { useExportWeatherLogs } from "@/hooks/mutations/use-export-weather-logs";
 import { getWeatherLogQueryKey } from "@/hooks/query/use-weather-log-query";
 
 import ChartCardRoot from "./-components/chart-card-root";
@@ -46,7 +55,13 @@ const chartConfig = {
 function RouteComponent() {
   const { currentDate, currentWeatherLogsData, isPendingWeatherLogsData } =
     useWeathersLogsContext();
+  const [open, setOpen] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: new Date(),
+  });
   const queryClient = useQueryClient();
+  const exportMutation = useExportWeatherLogs();
 
   if (isPendingWeatherLogsData || !currentWeatherLogsData) {
     return <SkeletonDashboard />;
@@ -73,7 +88,46 @@ function RouteComponent() {
               <>Recarregar dados</>
             )}
           </Button>
-          <Button>Exportar dados completos</Button>
+
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button>Exportar dados completos</Button>
+            </PopoverTrigger>
+
+            <PopoverContent
+              className="w-auto overflow-hidden p-4 space-y-4"
+              align="start"
+            >
+              <Calendar
+                mode="range"
+                defaultMonth={dateRange?.from}
+                selected={dateRange}
+                onSelect={setDateRange}
+                numberOfMonths={2}
+              />
+
+              <Button
+                className="w-full"
+                disabled={exportMutation.isPending}
+                onClick={() => {
+                  if (!dateRange?.from || !dateRange?.to) return;
+
+                  exportMutation.mutate({
+                    from: dateRange.from.toISOString().split("T")[0],
+                    to: dateRange.to.toISOString().split("T")[0],
+                    location:
+                      currentWeatherLogsData?.[0]?.location ?? undefined,
+                  });
+
+                  setOpen(false);
+                }}
+              >
+                {exportMutation.isPending
+                  ? "Exportando..."
+                  : "Confirmar Intervalo para Exportar"}
+              </Button>
+            </PopoverContent>
+          </Popover>
         </div>
 
         {currentWeatherLogsData && currentWeatherLogsData.length > 0 && (
