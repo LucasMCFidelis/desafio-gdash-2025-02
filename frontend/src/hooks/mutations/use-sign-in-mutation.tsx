@@ -11,10 +11,14 @@ const API_URL = `${import.meta.env.VITE_API_URL}`.replace(/\/+$/, "");
 const LOGIN_PATH_URL = "/auth/login";
 
 const signInUser = async (userCredentials: SignInSchemaDto) => {
-  const response = await axios.post(`${API_URL}${LOGIN_PATH_URL}`, {
-    userEmail: userCredentials.email,
-    passwordProvided: userCredentials.password,
-  });
+  const response = await axios.post(
+    `${API_URL}${LOGIN_PATH_URL}`,
+    {
+      userEmail: userCredentials.email,
+      passwordProvided: userCredentials.password,
+    },
+    { withCredentials: true }
+  );
 
   return response.data;
 };

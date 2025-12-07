@@ -11,11 +11,15 @@ const API_URL = `${import.meta.env.VITE_API_URL}`.replace(/\/+$/, "");
 const CREATE_USER_PATH_URL = "/user";
 
 const createUser = async (userData: SignUpSchemaDto) => {
-  const response = await axios.post(`${API_URL}${CREATE_USER_PATH_URL}`, {
-    name: userData.name,
-    email: userData.email,
-    password: userData.password,
-  });
+  const response = await axios.post(
+    `${API_URL}${CREATE_USER_PATH_URL}`,
+    {
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
+    },
+    { withCredentials: true }
+  );
 
   return response.data;
 };
