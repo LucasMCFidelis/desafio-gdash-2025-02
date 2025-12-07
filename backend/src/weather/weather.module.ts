@@ -5,6 +5,7 @@ import { CreateWeatherLogRepository } from './repositories/create-weather-log.re
 import { GetWeatherLogsRepository } from './repositories/get-weather-logs.repository';
 import { Weather, WeatherSchema } from './Schema/weather.schema';
 import { CreateWeatherLogService } from './services/create-weather-log.service';
+import { WeatherExportService } from './services/export-weather-logs.service';
 import { GetWeatherLogService } from './services/get-weather-logs.service';
 import { WeatherController } from './weather.controller';
 
@@ -18,12 +19,14 @@ import { WeatherController } from './weather.controller';
     CreateWeatherLogService,
     GetWeatherLogsRepository,
     GetWeatherLogService,
+    WeatherExportService,
   ],
   exports: [
     CreateWeatherLogRepository,
     CreateWeatherLogService,
     GetWeatherLogsRepository,
     GetWeatherLogService,
+    WeatherExportService,
   ],
 })
 export class WeatherModule {}
